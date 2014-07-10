@@ -1,0 +1,51 @@
+{% extends "play/layout_user.html" %}
+{% block content %}
+
+<div id="skills">
+		<div class="container" >
+			<div class="row">
+				<br>
+				<h3>WHAT PALO ALTO OFFERS</h3>
+				<div class="col-md-8">
+
+					<div class="panel-group" id="accordion">
+						
+						{% for result in coupons %}
+            <hr class="featurette-divider"></hr>
+            <div class="row">
+              <div class="col-md-1">
+                <img style="width:80px; height:80px"src="{{result.picture_url}}">
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-2">
+                <h3>{{result.title}}</h3>
+                <p># left {{result.coupons_released}}</p>
+              </div>
+              <div class="col-md-4">
+                <p><b>WHAT</b> {{result.description}}<br>
+                <b>WHERE</b> {{result.location}}<br>
+                <b>POINTS</b> {{result.price}} | <b>SHOP</b> {{result.shop}}</p>
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-2">
+                    <a href="/look_coupons/?id_coupon={{result.id}}">
+                        GET IT!
+                    </a>
+              </div>
+              
+
+            </div>
+
+  						{% endfor %}
+
+					</div>
+
+
+				</div>
+        
+				
+			</div>
+		</div> 
+	</div>
+
+{% endblock %}
