@@ -66,6 +66,7 @@ def index(request):
 #USER PAGES
 
 def tmp_home(request):
+    global CITY
     CITY=assignCity(request, request.user)
     return HttpResponseRedirect('/'+CITY+'/home/')
 

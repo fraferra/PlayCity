@@ -165,7 +165,7 @@ def checkCity(request, CITY):
             return True
 
     except ObjectDoesNotExist:
-        return False
+        return True
 
 
 def get_client_ip(request):
