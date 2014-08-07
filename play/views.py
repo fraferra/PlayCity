@@ -26,6 +26,7 @@ def login(request):
         if user is not None:
             if user.is_active:
                 auth_login(request, user)
+                global CITY
                 CITY=assignCity(request, user)
                 return HttpResponseRedirect('/'+CITY+'/home/')
     return render(request, 'play/login.html')
@@ -72,7 +73,7 @@ def tmp_home(request):
 def home(request, city_name=CITY):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
-    else:
+    if checkCity(request, CITY) and request.user.is_authenticated():
         user=request.user
         player=Player.objects.get(user=user)
         pictureUrl(user, player)
@@ -84,15 +85,18 @@ def home(request, city_name=CITY):
         my_coupons=player.coupon_set.all()
         my_badges=player.badge_set.all()
         return render(request, 'play/tmp-home.html', {'user':user, 'player':player,
+                                                 'city':CITY,
                                                  'num_events':num_events ,'my_coupons':my_coupons,
                                                  'top10':top10, 'my_events':my_events,
                                                  'my_badges':my_badges,
                                                  'organization':organization})
+    else:
+        return HttpResponseRedirect('/logout')
 
 def look_events(request, city_name=CITY):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
-    else:
+    if checkCity(request, CITY) and request.user.is_authenticated():
         user=request.user
         player=Player.objects.get(user=user)
         my_events=player.event_set.all()
@@ -111,15 +115,19 @@ def look_events(request, city_name=CITY):
                 player.save()
                 return HttpResponseRedirect('/home/')
         return render(request, 'play/look_events.html', {'user':user, 'player':player,
+                                                        'city':CITY,
                                                  'events':events, 'my_events':my_events,
                                                  'yelp':yelp,
                                                  #'comment_events':comment_events,
                                                  'organization':organization})
+    else:
+        return HttpResponseRedirect('/logout')
+
 
 def look_coupons(request, city_name=CITY):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
-    else:
+    if checkCity(request, CITY) and request.user.is_authenticated():
         user=request.user
         player=Player.objects.get(user=user)
         my_coupons=player.coupon_set.all()
@@ -136,6 +144,7 @@ def look_coupons(request, city_name=CITY):
                 player.save()
                 return HttpResponseRedirect('/home/')
         return render(request, 'play/look_coupons.html', {'user':user, 'player':player,
+                                                            'city':CITY,
                                                  'coupons':coupons, 'my_coupons':my_coupons,
                                                  'organization':organization})
 
@@ -143,7 +152,7 @@ def look_coupons(request, city_name=CITY):
 def leaderboard(request, city_name=CITY):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
-    else:
+    if checkCity(request, CITY) and request.user.is_authenticated():
         user=request.user
         player=Player.objects.get(user=user)
         organization, shop=getShop(user)
@@ -157,16 +166,18 @@ def leaderboard(request, city_name=CITY):
             if player == p:
                 player_position=i
             i=i+1
-        return render(request, 'play/leaderboard.html', {'user':user, 'player':player,'length':length,'lis':lis,
+        return render(request, 'play/leaderboard.html', {'user':user,'city':CITY,
+                                                         'player':player,'length':length,'lis':lis,
                                                   'sorted_list':sorted_list, 'player_position':player_position,
                                                   'organization':organization})
-
+    else:
+        return HttpResponseRedirect('/logout')
 
 
 def event(request, city_name=CITY):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
-    else:
+    if checkCity(request, CITY) and request.user.is_authenticated():
         id_event=request.GET['id_event']
         event=Event.objects.get(pk=id_event)
         user=request.user
@@ -186,14 +197,16 @@ def event(request, city_name=CITY):
             form = CommentForm()
 
         return render(request, 'play/event.html', {'user':user, 'player':player,
-                                                         'form':form,'event':event,
+                                                         'form':form,'event':event,'city':CITY,
                                                          'previous_comments':previous_comments,
                                                   'organization':organization})
+    else:
+        return HttpResponseRedirect('/logout')
 
 def wall(request, city_name=CITY):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
-    else:
+    if checkCity(request, CITY) and request.user.is_authenticated():
         id_event=request.GET['id_event']
         event=Event.objects.get(pk=id_event)
         user=request.user
@@ -201,14 +214,16 @@ def wall(request, city_name=CITY):
         organization, shop=getShop(user)
 
         return render(request, 'play/event.html', {'user':user, 'player':player,
-                                                   'event':event,
+                                                   'event':event,'city':CITY,
                                                   'organization':organization}) 
+    else:
+        return HttpResponseRedirect('/logout')
 
 
 def feeds(request, city_name=CITY):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
-    else:
+    if checkCity(request, CITY) and request.user.is_authenticated():
         user=request.user
         player=Player.objects.get(user=user)
         pictureUrl(user, player)
@@ -235,17 +250,18 @@ def feeds(request, city_name=CITY):
                 addLike(id_like_feed)
                 return HttpResponseRedirect('/feeds/')
         return render(request, 'play/feeds.html', {'user':user, 'player':player,
-                                                    'form':form,
+                                                    'form':form,'city':CITY,
                                                     'coments_and_feeds':coments_and_feeds,
                                                  'organization':organization})
-
+    else:
+        return HttpResponseRedirect('/logout')
 
 
 def edit_profile(request, city_name=CITY):
     completed_events=''
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
-    else:
+    if checkCity(request, CITY) and request.user.is_authenticated():
         user=request.user
         player=Player.objects.get(user=user)
         completed_events=EventHistory.objects.filter(player=player)
@@ -269,7 +285,8 @@ def edit_profile(request, city_name=CITY):
         return render(request, 'play/edit_profile.html', {'user':user, 'player':player,
                                                           'num_events':num_events ,
                                                             'top10':top10,
-                                                            'form2':form2,
+                                                            'form2':form2,'city':CITY,
                                                             'my_badges':my_badges,
                                                           'form':form,'organization':organization})
-
+    else:
+        return HttpResponseRedirect('/logout')

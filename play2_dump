@@ -1,0 +1,3598 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO postgres;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO postgres;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO postgres;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone NOT NULL,
+    is_superuser boolean NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(75) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO postgres;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO postgres;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO postgres;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- Name: charity_event; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE charity_event (
+    id integer NOT NULL,
+    title character varying(100),
+    description text,
+    location character varying(100),
+    picture_url character varying(200),
+    experience numeric(5,0),
+    challenge_event character varying(50) NOT NULL,
+    points numeric(4,0) NOT NULL,
+    event_type character varying(50) NOT NULL,
+    date timestamp with time zone,
+    organizer_id integer NOT NULL
+);
+
+
+ALTER TABLE public.charity_event OWNER TO postgres;
+
+--
+-- Name: charity_event_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE charity_event_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.charity_event_id_seq OWNER TO postgres;
+
+--
+-- Name: charity_event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE charity_event_id_seq OWNED BY charity_event.id;
+
+
+--
+-- Name: charity_event_participants; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE charity_event_participants (
+    id integer NOT NULL,
+    event_id integer NOT NULL,
+    player_id integer NOT NULL
+);
+
+
+ALTER TABLE public.charity_event_participants OWNER TO postgres;
+
+--
+-- Name: charity_event_participants_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE charity_event_participants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.charity_event_participants_id_seq OWNER TO postgres;
+
+--
+-- Name: charity_event_participants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE charity_event_participants_id_seq OWNED BY charity_event_participants.id;
+
+
+--
+-- Name: charity_organization; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE charity_organization (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    title character varying(100),
+    location character varying(100)
+);
+
+
+ALTER TABLE public.charity_organization OWNER TO postgres;
+
+--
+-- Name: charity_organization_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE charity_organization_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.charity_organization_id_seq OWNER TO postgres;
+
+--
+-- Name: charity_organization_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE charity_organization_id_seq OWNED BY charity_organization.id;
+
+
+--
+-- Name: city_city; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE city_city (
+    id integer NOT NULL,
+    name character varying(100)
+);
+
+
+ALTER TABLE public.city_city OWNER TO postgres;
+
+--
+-- Name: city_city_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE city_city_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.city_city_id_seq OWNER TO postgres;
+
+--
+-- Name: city_city_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE city_city_id_seq OWNED BY city_city.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    user_id integer NOT NULL,
+    content_type_id integer,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO postgres;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO postgres;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO postgres;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO postgres;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- Name: django_geoip_city; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_geoip_city (
+    id integer NOT NULL,
+    region_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    latitude numeric(9,6),
+    longitude numeric(9,6)
+);
+
+
+ALTER TABLE public.django_geoip_city OWNER TO postgres;
+
+--
+-- Name: django_geoip_city_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_geoip_city_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_geoip_city_id_seq OWNER TO postgres;
+
+--
+-- Name: django_geoip_city_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_geoip_city_id_seq OWNED BY django_geoip_city.id;
+
+
+--
+-- Name: django_geoip_country; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_geoip_country (
+    code character varying(2) NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.django_geoip_country OWNER TO postgres;
+
+--
+-- Name: django_geoip_iprange; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_geoip_iprange (
+    id integer NOT NULL,
+    start_ip bigint NOT NULL,
+    end_ip bigint NOT NULL,
+    country_id character varying(2) NOT NULL,
+    region_id integer,
+    city_id integer
+);
+
+
+ALTER TABLE public.django_geoip_iprange OWNER TO postgres;
+
+--
+-- Name: django_geoip_iprange_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_geoip_iprange_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_geoip_iprange_id_seq OWNER TO postgres;
+
+--
+-- Name: django_geoip_iprange_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_geoip_iprange_id_seq OWNED BY django_geoip_iprange.id;
+
+
+--
+-- Name: django_geoip_region; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_geoip_region (
+    id integer NOT NULL,
+    country_id character varying(2) NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.django_geoip_region OWNER TO postgres;
+
+--
+-- Name: django_geoip_region_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_geoip_region_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_geoip_region_id_seq OWNER TO postgres;
+
+--
+-- Name: django_geoip_region_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_geoip_region_id_seq OWNED BY django_geoip_region.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO postgres;
+
+--
+-- Name: django_site; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_site (
+    id integer NOT NULL,
+    domain character varying(100) NOT NULL,
+    name character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.django_site OWNER TO postgres;
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_site_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_site_id_seq OWNER TO postgres;
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_site_id_seq OWNED BY django_site.id;
+
+
+--
+-- Name: oauth2_accesstoken; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth2_accesstoken (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    token character varying(255) NOT NULL,
+    client_id integer NOT NULL,
+    expires timestamp with time zone NOT NULL,
+    scope integer NOT NULL
+);
+
+
+ALTER TABLE public.oauth2_accesstoken OWNER TO postgres;
+
+--
+-- Name: oauth2_accesstoken_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE oauth2_accesstoken_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.oauth2_accesstoken_id_seq OWNER TO postgres;
+
+--
+-- Name: oauth2_accesstoken_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE oauth2_accesstoken_id_seq OWNED BY oauth2_accesstoken.id;
+
+
+--
+-- Name: oauth2_client; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth2_client (
+    id integer NOT NULL,
+    user_id integer,
+    url character varying(200) NOT NULL,
+    redirect_uri character varying(200) NOT NULL,
+    client_id character varying(255) NOT NULL,
+    client_secret character varying(255) NOT NULL,
+    client_type integer NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.oauth2_client OWNER TO postgres;
+
+--
+-- Name: oauth2_client_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE oauth2_client_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.oauth2_client_id_seq OWNER TO postgres;
+
+--
+-- Name: oauth2_client_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE oauth2_client_id_seq OWNED BY oauth2_client.id;
+
+
+--
+-- Name: oauth2_grant; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth2_grant (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    client_id integer NOT NULL,
+    code character varying(255) NOT NULL,
+    expires timestamp with time zone NOT NULL,
+    redirect_uri character varying(255) NOT NULL,
+    scope integer NOT NULL
+);
+
+
+ALTER TABLE public.oauth2_grant OWNER TO postgres;
+
+--
+-- Name: oauth2_grant_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE oauth2_grant_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.oauth2_grant_id_seq OWNER TO postgres;
+
+--
+-- Name: oauth2_grant_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE oauth2_grant_id_seq OWNED BY oauth2_grant.id;
+
+
+--
+-- Name: oauth2_refreshtoken; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth2_refreshtoken (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    token character varying(255) NOT NULL,
+    access_token_id integer NOT NULL,
+    client_id integer NOT NULL,
+    expired boolean NOT NULL
+);
+
+
+ALTER TABLE public.oauth2_refreshtoken OWNER TO postgres;
+
+--
+-- Name: oauth2_refreshtoken_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE oauth2_refreshtoken_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.oauth2_refreshtoken_id_seq OWNER TO postgres;
+
+--
+-- Name: oauth2_refreshtoken_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE oauth2_refreshtoken_id_seq OWNED BY oauth2_refreshtoken.id;
+
+
+--
+-- Name: play_badge; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE play_badge (
+    id integer NOT NULL,
+    player_id integer NOT NULL,
+    title character varying(100),
+    icon character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.play_badge OWNER TO postgres;
+
+--
+-- Name: play_badge_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE play_badge_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.play_badge_id_seq OWNER TO postgres;
+
+--
+-- Name: play_badge_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE play_badge_id_seq OWNED BY play_badge.id;
+
+
+--
+-- Name: play_comment; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE play_comment (
+    id integer NOT NULL,
+    comment text,
+    commenter_id integer NOT NULL,
+    event_id integer NOT NULL,
+    date timestamp with time zone
+);
+
+
+ALTER TABLE public.play_comment OWNER TO postgres;
+
+--
+-- Name: play_comment_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE play_comment_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.play_comment_id_seq OWNER TO postgres;
+
+--
+-- Name: play_comment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE play_comment_id_seq OWNED BY play_comment.id;
+
+
+--
+-- Name: play_commentfeed; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE play_commentfeed (
+    id integer NOT NULL,
+    comment text,
+    commenter_id integer NOT NULL,
+    feed_id integer NOT NULL,
+    date timestamp with time zone
+);
+
+
+ALTER TABLE public.play_commentfeed OWNER TO postgres;
+
+--
+-- Name: play_commentfeed_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE play_commentfeed_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.play_commentfeed_id_seq OWNER TO postgres;
+
+--
+-- Name: play_commentfeed_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE play_commentfeed_id_seq OWNED BY play_commentfeed.id;
+
+
+--
+-- Name: play_couponhistory; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE play_couponhistory (
+    id integer NOT NULL,
+    title character varying(100),
+    shop character varying(100),
+    player_id integer NOT NULL
+);
+
+
+ALTER TABLE public.play_couponhistory OWNER TO postgres;
+
+--
+-- Name: play_couponhistory_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE play_couponhistory_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.play_couponhistory_id_seq OWNER TO postgres;
+
+--
+-- Name: play_couponhistory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE play_couponhistory_id_seq OWNED BY play_couponhistory.id;
+
+
+--
+-- Name: play_eventhistory; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE play_eventhistory (
+    id integer NOT NULL,
+    date timestamp with time zone,
+    title character varying(100),
+    organization character varying(100),
+    player_id integer NOT NULL,
+    points numeric(4,0) NOT NULL,
+    event_type character varying(50)
+);
+
+
+ALTER TABLE public.play_eventhistory OWNER TO postgres;
+
+--
+-- Name: play_eventhistory_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE play_eventhistory_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.play_eventhistory_id_seq OWNER TO postgres;
+
+--
+-- Name: play_eventhistory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE play_eventhistory_id_seq OWNED BY play_eventhistory.id;
+
+
+--
+-- Name: play_feed; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE play_feed (
+    id integer NOT NULL,
+    player_id integer NOT NULL,
+    event_id integer NOT NULL,
+    likes numeric(4,0) NOT NULL,
+    date timestamp with time zone
+);
+
+
+ALTER TABLE public.play_feed OWNER TO postgres;
+
+--
+-- Name: play_feed_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE play_feed_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.play_feed_id_seq OWNER TO postgres;
+
+--
+-- Name: play_feed_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE play_feed_id_seq OWNED BY play_feed.id;
+
+
+--
+-- Name: play_idea; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE play_idea (
+    id integer NOT NULL,
+    title character varying(100),
+    author character varying(100),
+    description text,
+    points numeric(4,0) NOT NULL,
+    experience numeric(5,0)
+);
+
+
+ALTER TABLE public.play_idea OWNER TO postgres;
+
+--
+-- Name: play_idea_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE play_idea_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.play_idea_id_seq OWNER TO postgres;
+
+--
+-- Name: play_idea_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE play_idea_id_seq OWNED BY play_idea.id;
+
+
+--
+-- Name: play_player; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE play_player (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    token character varying(100),
+    score numeric(4,0),
+    experience numeric(5,0),
+    level numeric(4,0),
+    picture_url character varying(400),
+    facebook_pic boolean NOT NULL,
+    city_id integer
+);
+
+
+ALTER TABLE public.play_player OWNER TO postgres;
+
+--
+-- Name: play_player_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE play_player_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.play_player_id_seq OWNER TO postgres;
+
+--
+-- Name: play_player_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE play_player_id_seq OWNED BY play_player.id;
+
+
+--
+-- Name: shop_coupon; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE shop_coupon (
+    id integer NOT NULL,
+    title character varying(50),
+    description text,
+    location character varying(100),
+    price numeric(4,0) NOT NULL,
+    picture_url character varying(200),
+    shop_id integer NOT NULL,
+    coupons_released numeric(4,0) NOT NULL
+);
+
+
+ALTER TABLE public.shop_coupon OWNER TO postgres;
+
+--
+-- Name: shop_coupon_buyers; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE shop_coupon_buyers (
+    id integer NOT NULL,
+    coupon_id integer NOT NULL,
+    player_id integer NOT NULL
+);
+
+
+ALTER TABLE public.shop_coupon_buyers OWNER TO postgres;
+
+--
+-- Name: shop_coupon_buyers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE shop_coupon_buyers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.shop_coupon_buyers_id_seq OWNER TO postgres;
+
+--
+-- Name: shop_coupon_buyers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE shop_coupon_buyers_id_seq OWNED BY shop_coupon_buyers.id;
+
+
+--
+-- Name: shop_coupon_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE shop_coupon_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.shop_coupon_id_seq OWNER TO postgres;
+
+--
+-- Name: shop_coupon_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE shop_coupon_id_seq OWNED BY shop_coupon.id;
+
+
+--
+-- Name: shop_shop; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE shop_shop (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    title character varying(100),
+    location character varying(100),
+    picture_url character varying(200)
+);
+
+
+ALTER TABLE public.shop_shop OWNER TO postgres;
+
+--
+-- Name: shop_shop_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE shop_shop_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.shop_shop_id_seq OWNER TO postgres;
+
+--
+-- Name: shop_shop_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE shop_shop_id_seq OWNED BY shop_shop.id;
+
+
+--
+-- Name: social_auth_association; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE social_auth_association (
+    id integer NOT NULL,
+    server_url character varying(255) NOT NULL,
+    handle character varying(255) NOT NULL,
+    secret character varying(255) NOT NULL,
+    issued integer NOT NULL,
+    lifetime integer NOT NULL,
+    assoc_type character varying(64) NOT NULL
+);
+
+
+ALTER TABLE public.social_auth_association OWNER TO postgres;
+
+--
+-- Name: social_auth_association_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE social_auth_association_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.social_auth_association_id_seq OWNER TO postgres;
+
+--
+-- Name: social_auth_association_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE social_auth_association_id_seq OWNED BY social_auth_association.id;
+
+
+--
+-- Name: social_auth_nonce; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE social_auth_nonce (
+    id integer NOT NULL,
+    server_url character varying(255) NOT NULL,
+    "timestamp" integer NOT NULL,
+    salt character varying(40) NOT NULL
+);
+
+
+ALTER TABLE public.social_auth_nonce OWNER TO postgres;
+
+--
+-- Name: social_auth_nonce_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE social_auth_nonce_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.social_auth_nonce_id_seq OWNER TO postgres;
+
+--
+-- Name: social_auth_nonce_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE social_auth_nonce_id_seq OWNED BY social_auth_nonce.id;
+
+
+--
+-- Name: social_auth_usersocialauth; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE social_auth_usersocialauth (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    provider character varying(32) NOT NULL,
+    uid character varying(255) NOT NULL,
+    extra_data text NOT NULL
+);
+
+
+ALTER TABLE public.social_auth_usersocialauth OWNER TO postgres;
+
+--
+-- Name: social_auth_usersocialauth_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE social_auth_usersocialauth_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.social_auth_usersocialauth_id_seq OWNER TO postgres;
+
+--
+-- Name: social_auth_usersocialauth_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE social_auth_usersocialauth_id_seq OWNED BY social_auth_usersocialauth.id;
+
+
+--
+-- Name: south_migrationhistory; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE south_migrationhistory (
+    id integer NOT NULL,
+    app_name character varying(255) NOT NULL,
+    migration character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.south_migrationhistory OWNER TO postgres;
+
+--
+-- Name: south_migrationhistory_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE south_migrationhistory_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.south_migrationhistory_id_seq OWNER TO postgres;
+
+--
+-- Name: south_migrationhistory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE south_migrationhistory_id_seq OWNED BY south_migrationhistory.id;
+
+
+--
+-- Name: tastypie_apiaccess; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tastypie_apiaccess (
+    id integer NOT NULL,
+    identifier character varying(255) NOT NULL,
+    url character varying(255) NOT NULL,
+    request_method character varying(10) NOT NULL,
+    accessed integer NOT NULL,
+    CONSTRAINT tastypie_apiaccess_accessed_check CHECK ((accessed >= 0))
+);
+
+
+ALTER TABLE public.tastypie_apiaccess OWNER TO postgres;
+
+--
+-- Name: tastypie_apiaccess_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE tastypie_apiaccess_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tastypie_apiaccess_id_seq OWNER TO postgres;
+
+--
+-- Name: tastypie_apiaccess_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE tastypie_apiaccess_id_seq OWNED BY tastypie_apiaccess.id;
+
+
+--
+-- Name: tastypie_apikey; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tastypie_apikey (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    key character varying(256) NOT NULL,
+    created timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.tastypie_apikey OWNER TO postgres;
+
+--
+-- Name: tastypie_apikey_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE tastypie_apikey_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tastypie_apikey_id_seq OWNER TO postgres;
+
+--
+-- Name: tastypie_apikey_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE tastypie_apikey_id_seq OWNED BY tastypie_apikey.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY charity_event ALTER COLUMN id SET DEFAULT nextval('charity_event_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY charity_event_participants ALTER COLUMN id SET DEFAULT nextval('charity_event_participants_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY charity_organization ALTER COLUMN id SET DEFAULT nextval('charity_organization_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY city_city ALTER COLUMN id SET DEFAULT nextval('city_city_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_geoip_city ALTER COLUMN id SET DEFAULT nextval('django_geoip_city_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_geoip_iprange ALTER COLUMN id SET DEFAULT nextval('django_geoip_iprange_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_geoip_region ALTER COLUMN id SET DEFAULT nextval('django_geoip_region_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_site ALTER COLUMN id SET DEFAULT nextval('django_site_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_accesstoken ALTER COLUMN id SET DEFAULT nextval('oauth2_accesstoken_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_client ALTER COLUMN id SET DEFAULT nextval('oauth2_client_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_grant ALTER COLUMN id SET DEFAULT nextval('oauth2_grant_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_refreshtoken ALTER COLUMN id SET DEFAULT nextval('oauth2_refreshtoken_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_badge ALTER COLUMN id SET DEFAULT nextval('play_badge_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_comment ALTER COLUMN id SET DEFAULT nextval('play_comment_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_commentfeed ALTER COLUMN id SET DEFAULT nextval('play_commentfeed_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_couponhistory ALTER COLUMN id SET DEFAULT nextval('play_couponhistory_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_eventhistory ALTER COLUMN id SET DEFAULT nextval('play_eventhistory_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_feed ALTER COLUMN id SET DEFAULT nextval('play_feed_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_idea ALTER COLUMN id SET DEFAULT nextval('play_idea_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_player ALTER COLUMN id SET DEFAULT nextval('play_player_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY shop_coupon ALTER COLUMN id SET DEFAULT nextval('shop_coupon_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY shop_coupon_buyers ALTER COLUMN id SET DEFAULT nextval('shop_coupon_buyers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY shop_shop ALTER COLUMN id SET DEFAULT nextval('shop_shop_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY social_auth_association ALTER COLUMN id SET DEFAULT nextval('social_auth_association_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY social_auth_nonce ALTER COLUMN id SET DEFAULT nextval('social_auth_nonce_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY social_auth_usersocialauth ALTER COLUMN id SET DEFAULT nextval('social_auth_usersocialauth_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY south_migrationhistory ALTER COLUMN id SET DEFAULT nextval('south_migrationhistory_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tastypie_apiaccess ALTER COLUMN id SET DEFAULT nextval('tastypie_apiaccess_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tastypie_apikey ALTER COLUMN id SET DEFAULT nextval('tastypie_apikey_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_group_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add permission	1	add_permission
+2	Can change permission	1	change_permission
+3	Can delete permission	1	delete_permission
+4	Can add group	2	add_group
+5	Can change group	2	change_group
+6	Can delete group	2	delete_group
+7	Can add user	3	add_user
+8	Can change user	3	change_user
+9	Can delete user	3	delete_user
+10	Can add content type	4	add_contenttype
+11	Can change content type	4	change_contenttype
+12	Can delete content type	4	delete_contenttype
+13	Can add session	5	add_session
+14	Can change session	5	change_session
+15	Can delete session	5	delete_session
+16	Can add site	6	add_site
+17	Can change site	6	change_site
+18	Can delete site	6	delete_site
+19	Can add log entry	7	add_logentry
+20	Can change log entry	7	change_logentry
+21	Can delete log entry	7	delete_logentry
+22	Can add player	8	add_player
+23	Can change player	8	change_player
+24	Can delete player	8	delete_player
+25	Can add coupon history	9	add_couponhistory
+26	Can change coupon history	9	change_couponhistory
+27	Can delete coupon history	9	delete_couponhistory
+28	Can add event history	10	add_eventhistory
+29	Can change event history	10	change_eventhistory
+30	Can delete event history	10	delete_eventhistory
+31	Can add idea	11	add_idea
+32	Can change idea	11	change_idea
+33	Can delete idea	11	delete_idea
+34	Can add comment	12	add_comment
+35	Can change comment	12	change_comment
+36	Can delete comment	12	delete_comment
+37	Can add feed	13	add_feed
+38	Can change feed	13	change_feed
+39	Can delete feed	13	delete_feed
+40	Can add comment feed	14	add_commentfeed
+41	Can change comment feed	14	change_commentfeed
+42	Can delete comment feed	14	delete_commentfeed
+43	Can add badge	15	add_badge
+44	Can change badge	15	change_badge
+45	Can delete badge	15	delete_badge
+46	Can add migration history	16	add_migrationhistory
+47	Can change migration history	16	change_migrationhistory
+48	Can delete migration history	16	delete_migrationhistory
+49	Can add organization	17	add_organization
+50	Can change organization	17	change_organization
+51	Can delete organization	17	delete_organization
+52	Can add event	18	add_event
+53	Can change event	18	change_event
+54	Can delete event	18	delete_event
+55	Can add shop	19	add_shop
+56	Can change shop	19	change_shop
+57	Can delete shop	19	delete_shop
+58	Can add coupon	20	add_coupon
+59	Can change coupon	20	change_coupon
+60	Can delete coupon	20	delete_coupon
+61	Can add user social auth	21	add_usersocialauth
+62	Can change user social auth	21	change_usersocialauth
+63	Can delete user social auth	21	delete_usersocialauth
+64	Can add nonce	22	add_nonce
+65	Can change nonce	22	change_nonce
+66	Can delete nonce	22	delete_nonce
+67	Can add association	23	add_association
+68	Can change association	23	change_association
+69	Can delete association	23	delete_association
+70	Can add city	24	add_city
+71	Can change city	24	change_city
+72	Can delete city	24	delete_city
+73	Can add client	25	add_client
+74	Can change client	25	change_client
+75	Can delete client	25	delete_client
+76	Can add grant	26	add_grant
+77	Can change grant	26	change_grant
+78	Can delete grant	26	delete_grant
+79	Can add access token	27	add_accesstoken
+80	Can change access token	27	change_accesstoken
+81	Can delete access token	27	delete_accesstoken
+82	Can add refresh token	28	add_refreshtoken
+83	Can change refresh token	28	change_refreshtoken
+84	Can delete refresh token	28	delete_refreshtoken
+85	Can add country	29	add_country
+86	Can change country	29	change_country
+87	Can delete country	29	delete_country
+88	Can add region	30	add_region
+89	Can change region	30	change_region
+90	Can delete region	30	delete_region
+91	Can add city	31	add_city
+92	Can change city	31	change_city
+93	Can delete city	31	delete_city
+94	Can add IP range	32	add_iprange
+95	Can change IP range	32	change_iprange
+96	Can delete IP range	32	delete_iprange
+97	Can add api access	33	add_apiaccess
+98	Can change api access	33	change_apiaccess
+99	Can delete api access	33	delete_apiaccess
+100	Can add api key	34	add_apikey
+101	Can change api key	34	change_apikey
+102	Can delete api key	34	delete_apikey
+\.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_permission_id_seq', 102, true);
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+3	pbkdf2_sha256$10000$sK8gu2EWw3ZH$UeVJB1LHv9zOW9jojCouRfRdL/cGRvhJMx6DYMH5Ei4=	2014-06-10 22:26:19.837084-07	f	fra@me.com	test	test	fra@me.com	f	t	2014-06-10 22:26:19.837131-07
+2	!	2014-07-10 12:14:36.525701-07	f	ciao	Francesco	Ferrari	francio_strancio@hotmail.it	f	t	2014-06-10 22:25:56.198583-07
+1	pbkdf2_sha256$10000$BGeoKEDDFoQS$8+htKcdm5105amxoLE8Qd2yByyfaVPzyWG+vBa4q+hg=	2014-07-23 16:52:38.644843-07	t	fraferra			fraferra@cisco.com	t	t	2014-06-10 21:04:46.460763-07
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_user_id_seq', 3, true);
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: charity_event; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY charity_event (id, title, description, location, picture_url, experience, challenge_event, points, event_type, date, organizer_id) FROM stdin;
+1	gtfr4de	btgrvfcedx	bgtvrfced	/static/img/shopping.png	1	Challenge	1	Shopping	2014-06-11 16:42:31-07	1
+2	111	1111	111	/static/img/art.png	11	Challenge	11	Art	2014-06-11 16:42:45-07	1
+4	ciao	ciaoceq'inx	here	/static/img/stanford.png	23	Shopping	14		\N	1
+5	test2	;ob42cn	123 st	/static/img/stanford.png	56	Food	34		\N	1
+6	test	gf4red	gfed	/static/img/stanford.png	12	Shopping	12		\N	1
+7	g5tf	frd	f	/static/img/stanford.png	2	Food	12		\N	1
+8	5GTFRDE	GTFRDE	1	/static/img/stanford.png	1	Shopping	1		2014-07-14 21:07:00-07	1
+9	T5FR4	GTFRDE	FTRDE	/static/img/stanford.png	1	Shopping	1		2014-07-23 21:07:00-07	1
+10	T5FR4	GTFRDE	FTRDE	/static/img/stanford.png	1	Shopping	1		2014-07-23 21:07:00-07	1
+11	kifr	ufrv	7uj6hygtf	/static/img/stanford.png	4	Food	3		2014-07-23 20:07:00-07	1
+\.
+
+
+--
+-- Name: charity_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('charity_event_id_seq', 11, true);
+
+
+--
+-- Data for Name: charity_event_participants; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY charity_event_participants (id, event_id, player_id) FROM stdin;
+1	2	2
+\.
+
+
+--
+-- Name: charity_event_participants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('charity_event_participants_id_seq', 1, true);
+
+
+--
+-- Data for Name: charity_organization; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY charity_organization (id, user_id, title, location) FROM stdin;
+1	2	Super Duper!	here
+\.
+
+
+--
+-- Name: charity_organization_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('charity_organization_id_seq', 1, true);
+
+
+--
+-- Data for Name: city_city; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY city_city (id, name) FROM stdin;
+1	london
+2	None
+\.
+
+
+--
+-- Name: city_city_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('city_city_id_seq', 2, true);
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_admin_log (id, action_time, user_id, content_type_id, object_id, object_repr, action_flag, change_message) FROM stdin;
+1	2014-06-11 16:42:16.227276-07	1	17	1	Super Duper!	1	
+2	2014-07-08 04:57:57.884196-07	1	24	1	london	1	
+3	2014-07-10 03:23:38.87353-07	1	24	2	None	1	
+\.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_admin_log_id_seq', 3, true);
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_content_type (id, name, app_label, model) FROM stdin;
+1	permission	auth	permission
+2	group	auth	group
+3	user	auth	user
+4	content type	contenttypes	contenttype
+5	session	sessions	session
+6	site	sites	site
+7	log entry	admin	logentry
+8	player	play	player
+9	coupon history	play	couponhistory
+10	event history	play	eventhistory
+11	idea	play	idea
+12	comment	play	comment
+13	feed	play	feed
+14	comment feed	play	commentfeed
+15	badge	play	badge
+16	migration history	south	migrationhistory
+17	organization	charity	organization
+18	event	charity	event
+19	shop	shop	shop
+20	coupon	shop	coupon
+21	user social auth	social_auth	usersocialauth
+22	nonce	social_auth	nonce
+23	association	social_auth	association
+24	city	city	city
+25	client	oauth2	client
+26	grant	oauth2	grant
+27	access token	oauth2	accesstoken
+28	refresh token	oauth2	refreshtoken
+29	country	django_geoip	country
+30	region	django_geoip	region
+31	city	django_geoip	city
+32	IP range	django_geoip	iprange
+33	api access	tastypie	apiaccess
+34	api key	tastypie	apikey
+\.
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_content_type_id_seq', 34, true);
+
+
+--
+-- Data for Name: django_geoip_city; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_geoip_city (id, region_id, name, latitude, longitude) FROM stdin;
+\.
+
+
+--
+-- Name: django_geoip_city_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_geoip_city_id_seq', 1, false);
+
+
+--
+-- Data for Name: django_geoip_country; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_geoip_country (code, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: django_geoip_iprange; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_geoip_iprange (id, start_ip, end_ip, country_id, region_id, city_id) FROM stdin;
+\.
+
+
+--
+-- Name: django_geoip_iprange_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_geoip_iprange_id_seq', 1, false);
+
+
+--
+-- Data for Name: django_geoip_region; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_geoip_region (id, country_id, name) FROM stdin;
+\.
+
+
+--
+-- Name: django_geoip_region_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_geoip_region_id_seq', 1, false);
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_session (session_key, session_data, expire_date) FROM stdin;
+eg6ilr7piel3ii1jov0jqv9bkisybeyp	ODlmNGQwODJkYTY0ZWU1MzE2YmU0ZWQyYzc4NTJkMzZmNzMwNzE3MzqAAn1xAShVDV9hdXRoX3VzZXJfaWRLAlUOZmFjZWJvb2tfc3RhdGVYIAAAAEQ4azBweEd1aU5YZFJYZEo5MUZBdFhZcHBXWmFNYzFtWAoAAAB0ZXN0Y29va2llcQJYBgAAAHdvcmtlZHEDVRJfYXV0aF91c2VyX2JhY2tlbmRVLXNvY2lhbF9hdXRoLmJhY2tlbmRzLmZhY2Vib29rLkZhY2Vib29rQmFja2VuZFUec29jaWFsX2F1dGhfbGFzdF9sb2dpbl9iYWNrZW5kWAgAAABmYWNlYm9va1gPAAAAX3Nlc3Npb25fZXhwaXJ5Y2RhdGV0aW1lCmRhdGV0aW1lCnEEVQoH3ggMBS46A/EhY3B5dHoKX1VUQwpxBSlScQaGUnEHdS4=	2014-08-11 22:46:58.258337-07
+25g3fbiur6sbp4eip2fe4efl7t956rtu	ZjYyMmYwYTQ0OGMzNTUzNWVlZmJmMTE2Nzc2ZTQ5NjEzN2Q2Yjg3OTqAAn1xAShVDmZhY2Vib29rX3N0YXRlWCAAAABvY1J1aG1lR2hLb0M3aW9ra3p5V0NCM0xOTHB5dXJLdlgPAAAAX3Nlc3Npb25fZXhwaXJ5cQJjZGF0ZXRpbWUKZGF0ZXRpbWUKcQNVCgfeCAoDEDgNlgBjcHl0egpfVVRDCnEEKVJxBYZScQZVEl9hdXRoX3VzZXJfYmFja2VuZHEHVS1zb2NpYWxfYXV0aC5iYWNrZW5kcy5mYWNlYm9vay5GYWNlYm9va0JhY2tlbmRxCFUNX2F1dGhfdXNlcl9pZHEJSwJVHnNvY2lhbF9hdXRoX2xhc3RfbG9naW5fYmFja2VuZHEKWAgAAABmYWNlYm9va3ELdS4=	2014-08-09 20:16:56.890368-07
+wzn1fxxddommpcwvwfumrxlsduuir27p	MDVkOTc2ZDNjOWY5YzZmNzRhMTJlZmM1ODg3YTlhOTIyNGIyYWE2ODqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVShwbGF5X3BhbG9fYWx0by5iYWNrZW5kcy5FbWFpbEF1dGhCYWNrZW5kcQNVDV9hdXRoX3VzZXJfaWRxBEsBdS4=	2014-08-06 16:52:38.648748-07
+m6wqprkcfje97l9vwbmgi86rvo4trb23	ZWNkZDRjZTJhMTg1M2NkNWY2NTdjOTIxOGE5Njk2NTA3MTgzYmMwNjqAAn1xAShVDmZhY2Vib29rX3N0YXRlWCAAAAB1WVpYYXl5Mmtjb0dRSjBDM1hNdFU4aDJvRFFyNmxnOFgPAAAAX3Nlc3Npb25fZXhwaXJ5cQJjZGF0ZXRpbWUKZGF0ZXRpbWUKcQNVCgfeCAsUMBoJsXdjcHl0egpfVVRDCnEEKVJxBYZScQZVEl9hdXRoX3VzZXJfYmFja2VuZHEHVS1zb2NpYWxfYXV0aC5iYWNrZW5kcy5mYWNlYm9vay5GYWNlYm9va0JhY2tlbmRxCFUNX2F1dGhfdXNlcl9pZHEJSwJVHnNvY2lhbF9hdXRoX2xhc3RfbG9naW5fYmFja2VuZHEKWAgAAABmYWNlYm9va3ELdS4=	2014-08-11 13:48:26.635255-07
+o43lvu1vawg6cg0rg0uz0cx7osq9u218	ZjFmM2IzMmYyY2E5YTI0OWI1OWM0M2E4NzFlZDQ2MjQyMjdiZGNmZTqAAn1xAShVDmZhY2Vib29rX3N0YXRlWCAAAAB3dlJWc1FLQ25jN2VnV04zNng1blNiSktXalB6Nmo3ZlgPAAAAX3Nlc3Npb25fZXhwaXJ5cQJjZGF0ZXRpbWUKZGF0ZXRpbWUKcQNVCgfeCA0TEzgE2KFjcHl0egpfVVRDCnEEKVJxBYZScQZVEl9hdXRoX3VzZXJfYmFja2VuZHEHVS1zb2NpYWxfYXV0aC5iYWNrZW5kcy5mYWNlYm9vay5GYWNlYm9va0JhY2tlbmRxCFUNX2F1dGhfdXNlcl9pZHEJSwJVHnNvY2lhbF9hdXRoX2xhc3RfbG9naW5fYmFja2VuZHEKWAgAAABmYWNlYm9va3ELdS4=	2014-08-13 12:19:56.317601-07
+tn4kyggceuu1vdokof0i4yywuswc16fo	ZjI0ZTQyY2Q3NDRlNjc2YTQ1N2UyM2JmNjI2Y2VhMjY4ZjgwYjMzNDqAAn1xAS4=	2014-07-04 12:42:55.404031-07
+u25v7otxjw4hyeli9uy5lixahres0tnf	ZWYxNDMwNTUzNmZiYjg4NGVkYmNlZGRmNWQ5YjMyNWY2YThiNzMwODqAAn1xAShVDmZhY2Vib29rX3N0YXRlWCAAAABmV0RhMTJQd0RPRjZUUVRmUE1mZm1mSnpDV1FrdW5zV1gPAAAAX3Nlc3Npb25fZXhwaXJ5cQJjZGF0ZXRpbWUKZGF0ZXRpbWUKcQNVCgfeCBMTKwUNkn1jcHl0egpfVVRDCnEEKVJxBYZScQZVEl9hdXRoX3VzZXJfYmFja2VuZHEHVS1zb2NpYWxfYXV0aC5iYWNrZW5kcy5mYWNlYm9vay5GYWNlYm9va0JhY2tlbmRxCFUNX2F1dGhfdXNlcl9pZHEJSwJVHnNvY2lhbF9hdXRoX2xhc3RfbG9naW5fYmFja2VuZHEKWAgAAABmYWNlYm9va3ELdS4=	2014-08-19 12:43:05.889469-07
+ixikwq517vlbx1hjhtgs8bncj7yroi7k	ZjI0ZTQyY2Q3NDRlNjc2YTQ1N2UyM2JmNjI2Y2VhMjY4ZjgwYjMzNDqAAn1xAS4=	2014-07-16 16:53:26.119722-07
+q4tjayidt1oo7sphtougxtnl1mzlgwb3	ZjAzNTAwMjc3NmE3MDdjZDYxYzMyZGZlYjc3YTFmNzk3ZWZiY2RlNTqAAn1xAShVDmZhY2Vib29rX3N0YXRlWCAAAABhaUs3alpIYzBocXBHMmxhMzhZbHl3TWduU3RQWko1ZVgPAAAAX3Nlc3Npb25fZXhwaXJ5cQJjZGF0ZXRpbWUKZGF0ZXRpbWUKcQNVCgfeCB8XNRwBc4djcHl0egpfVVRDCnEEKVJxBYZScQZVEl9hdXRoX3VzZXJfYmFja2VuZHEHVS1zb2NpYWxfYXV0aC5iYWNrZW5kcy5mYWNlYm9vay5GYWNlYm9va0JhY2tlbmRxCFUNX2F1dGhfdXNlcl9pZHEJSwJVHnNvY2lhbF9hdXRoX2xhc3RfbG9naW5fYmFja2VuZHEKWAgAAABmYWNlYm9va3ELdS4=	2014-08-31 16:53:28.095111-07
+x8afvsl8wcuncmhapm9k7w2tjhb0t32p	MDVkOTc2ZDNjOWY5YzZmNzRhMTJlZmM1ODg3YTlhOTIyNGIyYWE2ODqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVShwbGF5X3BhbG9fYWx0by5iYWNrZW5kcy5FbWFpbEF1dGhCYWNrZW5kcQNVDV9hdXRoX3VzZXJfaWRxBEsBdS4=	2014-07-22 04:57:38.890631-07
+ty9aovqhi0orpqjuwf95qsftz8nji1i7	ZjI0ZTQyY2Q3NDRlNjc2YTQ1N2UyM2JmNjI2Y2VhMjY4ZjgwYjMzNDqAAn1xAS4=	2014-07-24 03:25:10.213183-07
+vfl9czqj2y07k94c5sdofefrohhsdt5i	ZjI0ZTQyY2Q3NDRlNjc2YTQ1N2UyM2JmNjI2Y2VhMjY4ZjgwYjMzNDqAAn1xAS4=	2014-07-24 03:33:52.034186-07
+\.
+
+
+--
+-- Data for Name: django_site; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_site (id, domain, name) FROM stdin;
+1	example.com	example.com
+\.
+
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_site_id_seq', 1, true);
+
+
+--
+-- Data for Name: oauth2_accesstoken; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth2_accesstoken (id, user_id, token, client_id, expires, scope) FROM stdin;
+\.
+
+
+--
+-- Name: oauth2_accesstoken_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('oauth2_accesstoken_id_seq', 1, false);
+
+
+--
+-- Data for Name: oauth2_client; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth2_client (id, user_id, url, redirect_uri, client_id, client_secret, client_type, name) FROM stdin;
+\.
+
+
+--
+-- Name: oauth2_client_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('oauth2_client_id_seq', 1, false);
+
+
+--
+-- Data for Name: oauth2_grant; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth2_grant (id, user_id, client_id, code, expires, redirect_uri, scope) FROM stdin;
+\.
+
+
+--
+-- Name: oauth2_grant_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('oauth2_grant_id_seq', 1, false);
+
+
+--
+-- Data for Name: oauth2_refreshtoken; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY oauth2_refreshtoken (id, user_id, token, access_token_id, client_id, expired) FROM stdin;
+\.
+
+
+--
+-- Name: oauth2_refreshtoken_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('oauth2_refreshtoken_id_seq', 1, false);
+
+
+--
+-- Data for Name: play_badge; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY play_badge (id, player_id, title, icon) FROM stdin;
+\.
+
+
+--
+-- Name: play_badge_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('play_badge_id_seq', 1, false);
+
+
+--
+-- Data for Name: play_comment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY play_comment (id, comment, commenter_id, event_id, date) FROM stdin;
+\.
+
+
+--
+-- Name: play_comment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('play_comment_id_seq', 1, false);
+
+
+--
+-- Data for Name: play_commentfeed; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY play_commentfeed (id, comment, commenter_id, feed_id, date) FROM stdin;
+\.
+
+
+--
+-- Name: play_commentfeed_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('play_commentfeed_id_seq', 1, false);
+
+
+--
+-- Data for Name: play_couponhistory; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY play_couponhistory (id, title, shop, player_id) FROM stdin;
+\.
+
+
+--
+-- Name: play_couponhistory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('play_couponhistory_id_seq', 1, false);
+
+
+--
+-- Data for Name: play_eventhistory; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY play_eventhistory (id, date, title, organization, player_id, points, event_type) FROM stdin;
+\.
+
+
+--
+-- Name: play_eventhistory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('play_eventhistory_id_seq', 1, false);
+
+
+--
+-- Data for Name: play_feed; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY play_feed (id, player_id, event_id, likes, date) FROM stdin;
+\.
+
+
+--
+-- Name: play_feed_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('play_feed_id_seq', 1, false);
+
+
+--
+-- Data for Name: play_idea; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY play_idea (id, title, author, description, points, experience) FROM stdin;
+\.
+
+
+--
+-- Name: play_idea_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('play_idea_id_seq', 1, false);
+
+
+--
+-- Data for Name: play_player; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY play_player (id, user_id, token, score, experience, level, picture_url, facebook_pic, city_id) FROM stdin;
+1	1	\N	20	0	0	/static/img/avatar-1.png	t	\N
+3	3	\N	20	0	0	/static/img/avatar-1.png	t	\N
+2	2	\N	20	0	0	http://static.tumblr.com/e8eff3ba6f1fd5f0520f8d6cabfd3c60/q2nvyha/TMomkpqzr/tumblr_static_aviarios-del-caribe-sloth-sanctuary.10968.large_slideshow.jpg	f	\N
+\.
+
+
+--
+-- Name: play_player_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('play_player_id_seq', 3, true);
+
+
+--
+-- Data for Name: shop_coupon; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY shop_coupon (id, title, description, location, price, picture_url, shop_id, coupons_released) FROM stdin;
+\.
+
+
+--
+-- Data for Name: shop_coupon_buyers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY shop_coupon_buyers (id, coupon_id, player_id) FROM stdin;
+\.
+
+
+--
+-- Name: shop_coupon_buyers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shop_coupon_buyers_id_seq', 1, false);
+
+
+--
+-- Name: shop_coupon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shop_coupon_id_seq', 1, false);
+
+
+--
+-- Data for Name: shop_shop; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY shop_shop (id, user_id, title, location, picture_url) FROM stdin;
+\.
+
+
+--
+-- Name: shop_shop_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shop_shop_id_seq', 1, false);
+
+
+--
+-- Data for Name: social_auth_association; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY social_auth_association (id, server_url, handle, secret, issued, lifetime, assoc_type) FROM stdin;
+\.
+
+
+--
+-- Name: social_auth_association_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('social_auth_association_id_seq', 1, false);
+
+
+--
+-- Data for Name: social_auth_nonce; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY social_auth_nonce (id, server_url, "timestamp", salt) FROM stdin;
+\.
+
+
+--
+-- Name: social_auth_nonce_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('social_auth_nonce_id_seq', 1, false);
+
+
+--
+-- Data for Name: social_auth_usersocialauth; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY social_auth_usersocialauth (id, user_id, provider, uid, extra_data) FROM stdin;
+1	2	facebook	565493120	{"access_token": "CAAESosN1MxkBALD3f7unDceZCUBN4RNie8sDM7ZCFiO13AhdMoOtrBZA2SzCoKKaqPvYculeP3z6TlukIZBWr5Sojty5ZBAFAJGNxvc9CgcDpVHGdtqzSZBA4w3ZB8yqEAKsJ0ejJjU80dPypori6MHHVpeCzBYRZAOzcykuU7Byu0nZAvCp9JizbSogrPbEwFUACnlsVA9Cce4Idl7TDVnSE", "expires": "5183583", "id": "565493120"}
+\.
+
+
+--
+-- Name: social_auth_usersocialauth_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('social_auth_usersocialauth_id_seq', 1, true);
+
+
+--
+-- Data for Name: south_migrationhistory; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY south_migrationhistory (id, app_name, migration, applied) FROM stdin;
+1	social_auth	0001_initial	2014-06-10 21:04:57.169272-07
+2	social_auth	0002_auto__add_unique_nonce_timestamp_salt_server_url__add_unique_associati	2014-06-10 21:04:57.187382-07
+3	play	0001_initial	2014-06-10 21:05:01.969599-07
+4	play	0002_auto__add_field_eventhistory_event_type	2014-06-10 21:06:11.0595-07
+5	play	0003_auto__chg_field_player_picture_url	2014-06-11 16:13:47.541905-07
+6	play	0004_auto__add_field_player_facebook_pic	2014-06-11 16:19:03.684546-07
+7	city	0001_initial	2014-07-08 04:16:01.657558-07
+8	oauth2	0001_initial	2014-07-10 01:21:48.800656-07
+9	oauth2	0002_auto__chg_field_client_user	2014-07-10 01:21:48.860958-07
+10	oauth2	0003_auto__add_field_client_name	2014-07-10 01:21:48.887822-07
+11	django_geoip	0001_initial	2014-07-10 01:21:49.027152-07
+12	django_geoip	0002_countrynames	2014-07-10 01:21:49.037131-07
+13	tastypie	0001_initial	2014-07-10 01:21:49.109273-07
+14	tastypie	0002_add_apikey_index	2014-07-10 01:21:49.126089-07
+15	play	0005_auto__add_field_player_city	2014-07-10 03:28:48.346725-07
+\.
+
+
+--
+-- Name: south_migrationhistory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('south_migrationhistory_id_seq', 15, true);
+
+
+--
+-- Data for Name: tastypie_apiaccess; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tastypie_apiaccess (id, identifier, url, request_method, accessed) FROM stdin;
+\.
+
+
+--
+-- Name: tastypie_apiaccess_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tastypie_apiaccess_id_seq', 1, false);
+
+
+--
+-- Data for Name: tastypie_apikey; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tastypie_apikey (id, user_id, key, created) FROM stdin;
+\.
+
+
+--
+-- Name: tastypie_apikey_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tastypie_apikey_id_seq', 1, false);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_key UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_codename_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_key UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_user_id_group_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_key UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_key UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: charity_event_participants_event_id_player_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY charity_event_participants
+    ADD CONSTRAINT charity_event_participants_event_id_player_id_key UNIQUE (event_id, player_id);
+
+
+--
+-- Name: charity_event_participants_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY charity_event_participants
+    ADD CONSTRAINT charity_event_participants_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: charity_event_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY charity_event
+    ADD CONSTRAINT charity_event_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: charity_organization_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY charity_organization
+    ADD CONSTRAINT charity_organization_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: city_city_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY city_city
+    ADD CONSTRAINT city_city_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_model_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_key UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_geoip_city_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_geoip_city
+    ADD CONSTRAINT django_geoip_city_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_geoip_city_region_id_43318c2639673c5b_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_geoip_city
+    ADD CONSTRAINT django_geoip_city_region_id_43318c2639673c5b_uniq UNIQUE (region_id, name);
+
+
+--
+-- Name: django_geoip_country_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_geoip_country
+    ADD CONSTRAINT django_geoip_country_name_key UNIQUE (name);
+
+
+--
+-- Name: django_geoip_country_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_geoip_country
+    ADD CONSTRAINT django_geoip_country_pkey PRIMARY KEY (code);
+
+
+--
+-- Name: django_geoip_iprange_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_geoip_iprange
+    ADD CONSTRAINT django_geoip_iprange_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_geoip_region_country_id_420a61138eb8f6a5_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_geoip_region
+    ADD CONSTRAINT django_geoip_region_country_id_420a61138eb8f6a5_uniq UNIQUE (country_id, name);
+
+
+--
+-- Name: django_geoip_region_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_geoip_region
+    ADD CONSTRAINT django_geoip_region_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: django_site_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_site
+    ADD CONSTRAINT django_site_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: oauth2_accesstoken_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth2_accesstoken
+    ADD CONSTRAINT oauth2_accesstoken_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: oauth2_client_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth2_client
+    ADD CONSTRAINT oauth2_client_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: oauth2_grant_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth2_grant
+    ADD CONSTRAINT oauth2_grant_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: oauth2_refreshtoken_access_token_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth2_refreshtoken
+    ADD CONSTRAINT oauth2_refreshtoken_access_token_id_key UNIQUE (access_token_id);
+
+
+--
+-- Name: oauth2_refreshtoken_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth2_refreshtoken
+    ADD CONSTRAINT oauth2_refreshtoken_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: play_badge_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY play_badge
+    ADD CONSTRAINT play_badge_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: play_comment_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY play_comment
+    ADD CONSTRAINT play_comment_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: play_commentfeed_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY play_commentfeed
+    ADD CONSTRAINT play_commentfeed_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: play_couponhistory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY play_couponhistory
+    ADD CONSTRAINT play_couponhistory_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: play_eventhistory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY play_eventhistory
+    ADD CONSTRAINT play_eventhistory_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: play_feed_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY play_feed
+    ADD CONSTRAINT play_feed_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: play_idea_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY play_idea
+    ADD CONSTRAINT play_idea_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: play_player_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY play_player
+    ADD CONSTRAINT play_player_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shop_coupon_buyers_coupon_id_player_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY shop_coupon_buyers
+    ADD CONSTRAINT shop_coupon_buyers_coupon_id_player_id_key UNIQUE (coupon_id, player_id);
+
+
+--
+-- Name: shop_coupon_buyers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY shop_coupon_buyers
+    ADD CONSTRAINT shop_coupon_buyers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shop_coupon_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY shop_coupon
+    ADD CONSTRAINT shop_coupon_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shop_shop_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY shop_shop
+    ADD CONSTRAINT shop_shop_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: social_auth_association_handle_693a924207fa6ae_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY social_auth_association
+    ADD CONSTRAINT social_auth_association_handle_693a924207fa6ae_uniq UNIQUE (handle, server_url);
+
+
+--
+-- Name: social_auth_association_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY social_auth_association
+    ADD CONSTRAINT social_auth_association_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: social_auth_nonce_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY social_auth_nonce
+    ADD CONSTRAINT social_auth_nonce_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: social_auth_nonce_timestamp_3833ba21ef52524a_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY social_auth_nonce
+    ADD CONSTRAINT social_auth_nonce_timestamp_3833ba21ef52524a_uniq UNIQUE ("timestamp", salt, server_url);
+
+
+--
+-- Name: social_auth_usersocialauth_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY social_auth_usersocialauth
+    ADD CONSTRAINT social_auth_usersocialauth_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: social_auth_usersocialauth_provider_2f763109e2c4a1fb_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY social_auth_usersocialauth
+    ADD CONSTRAINT social_auth_usersocialauth_provider_2f763109e2c4a1fb_uniq UNIQUE (provider, uid);
+
+
+--
+-- Name: south_migrationhistory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY south_migrationhistory
+    ADD CONSTRAINT south_migrationhistory_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tastypie_apiaccess_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tastypie_apiaccess
+    ADD CONSTRAINT tastypie_apiaccess_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tastypie_apikey_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tastypie_apikey
+    ADD CONSTRAINT tastypie_apikey_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tastypie_apikey_user_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tastypie_apikey
+    ADD CONSTRAINT tastypie_apikey_user_id_key UNIQUE (user_id);
+
+
+--
+-- Name: auth_group_name_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_group_name_like ON auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_group_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_group_id ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_permission_id ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_permission_content_type_id ON auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_group_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_group_id ON auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_user_id ON auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_permission_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_permission_id ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_user_id ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_username_like ON auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: charity_event_organizer_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX charity_event_organizer_id ON charity_event USING btree (organizer_id);
+
+
+--
+-- Name: charity_event_participants_event_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX charity_event_participants_event_id ON charity_event_participants USING btree (event_id);
+
+
+--
+-- Name: charity_event_participants_player_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX charity_event_participants_player_id ON charity_event_participants USING btree (player_id);
+
+
+--
+-- Name: charity_organization_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX charity_organization_user_id ON charity_organization USING btree (user_id);
+
+
+--
+-- Name: django_admin_log_content_type_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_content_type_id ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_user_id ON django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_geoip_city_region_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_geoip_city_region_id ON django_geoip_city USING btree (region_id);
+
+
+--
+-- Name: django_geoip_country_code_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_geoip_country_code_like ON django_geoip_country USING btree (code varchar_pattern_ops);
+
+
+--
+-- Name: django_geoip_country_name_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_geoip_country_name_like ON django_geoip_country USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: django_geoip_iprange_city_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_geoip_iprange_city_id ON django_geoip_iprange USING btree (city_id);
+
+
+--
+-- Name: django_geoip_iprange_country_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_geoip_iprange_country_id ON django_geoip_iprange USING btree (country_id);
+
+
+--
+-- Name: django_geoip_iprange_country_id_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_geoip_iprange_country_id_like ON django_geoip_iprange USING btree (country_id varchar_pattern_ops);
+
+
+--
+-- Name: django_geoip_iprange_end_ip; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_geoip_iprange_end_ip ON django_geoip_iprange USING btree (end_ip);
+
+
+--
+-- Name: django_geoip_iprange_region_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_geoip_iprange_region_id ON django_geoip_iprange USING btree (region_id);
+
+
+--
+-- Name: django_geoip_iprange_start_ip; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_geoip_iprange_start_ip ON django_geoip_iprange USING btree (start_ip);
+
+
+--
+-- Name: django_geoip_region_country_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_geoip_region_country_id ON django_geoip_region USING btree (country_id);
+
+
+--
+-- Name: django_geoip_region_country_id_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_geoip_region_country_id_like ON django_geoip_region USING btree (country_id varchar_pattern_ops);
+
+
+--
+-- Name: django_session_expire_date; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_session_expire_date ON django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_session_session_key_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: oauth2_accesstoken_client_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX oauth2_accesstoken_client_id ON oauth2_accesstoken USING btree (client_id);
+
+
+--
+-- Name: oauth2_accesstoken_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX oauth2_accesstoken_user_id ON oauth2_accesstoken USING btree (user_id);
+
+
+--
+-- Name: oauth2_client_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX oauth2_client_user_id ON oauth2_client USING btree (user_id);
+
+
+--
+-- Name: oauth2_grant_client_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX oauth2_grant_client_id ON oauth2_grant USING btree (client_id);
+
+
+--
+-- Name: oauth2_grant_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX oauth2_grant_user_id ON oauth2_grant USING btree (user_id);
+
+
+--
+-- Name: oauth2_refreshtoken_client_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX oauth2_refreshtoken_client_id ON oauth2_refreshtoken USING btree (client_id);
+
+
+--
+-- Name: oauth2_refreshtoken_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX oauth2_refreshtoken_user_id ON oauth2_refreshtoken USING btree (user_id);
+
+
+--
+-- Name: play_badge_player_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX play_badge_player_id ON play_badge USING btree (player_id);
+
+
+--
+-- Name: play_comment_commenter_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX play_comment_commenter_id ON play_comment USING btree (commenter_id);
+
+
+--
+-- Name: play_comment_event_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX play_comment_event_id ON play_comment USING btree (event_id);
+
+
+--
+-- Name: play_commentfeed_commenter_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX play_commentfeed_commenter_id ON play_commentfeed USING btree (commenter_id);
+
+
+--
+-- Name: play_commentfeed_feed_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX play_commentfeed_feed_id ON play_commentfeed USING btree (feed_id);
+
+
+--
+-- Name: play_couponhistory_player_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX play_couponhistory_player_id ON play_couponhistory USING btree (player_id);
+
+
+--
+-- Name: play_eventhistory_player_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX play_eventhistory_player_id ON play_eventhistory USING btree (player_id);
+
+
+--
+-- Name: play_feed_event_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX play_feed_event_id ON play_feed USING btree (event_id);
+
+
+--
+-- Name: play_feed_player_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX play_feed_player_id ON play_feed USING btree (player_id);
+
+
+--
+-- Name: play_player_city_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX play_player_city_id ON play_player USING btree (city_id);
+
+
+--
+-- Name: play_player_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX play_player_user_id ON play_player USING btree (user_id);
+
+
+--
+-- Name: shop_coupon_buyers_coupon_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX shop_coupon_buyers_coupon_id ON shop_coupon_buyers USING btree (coupon_id);
+
+
+--
+-- Name: shop_coupon_buyers_player_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX shop_coupon_buyers_player_id ON shop_coupon_buyers USING btree (player_id);
+
+
+--
+-- Name: shop_coupon_shop_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX shop_coupon_shop_id ON shop_coupon USING btree (shop_id);
+
+
+--
+-- Name: shop_shop_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX shop_shop_user_id ON shop_shop USING btree (user_id);
+
+
+--
+-- Name: social_auth_association_issued; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX social_auth_association_issued ON social_auth_association USING btree (issued);
+
+
+--
+-- Name: social_auth_nonce_timestamp; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX social_auth_nonce_timestamp ON social_auth_nonce USING btree ("timestamp");
+
+
+--
+-- Name: social_auth_usersocialauth_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX social_auth_usersocialauth_user_id ON social_auth_usersocialauth USING btree (user_id);
+
+
+--
+-- Name: tastypie_apikey_key; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX tastypie_apikey_key ON tastypie_apikey USING btree (key);
+
+
+--
+-- Name: access_token_id_refs_id_b5577697; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_refreshtoken
+    ADD CONSTRAINT access_token_id_refs_id_b5577697 FOREIGN KEY (access_token_id) REFERENCES oauth2_accesstoken(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_fkey FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: charity_event_organizer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY charity_event
+    ADD CONSTRAINT charity_event_organizer_id_fkey FOREIGN KEY (organizer_id) REFERENCES charity_organization(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: charity_event_participants_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY charity_event_participants
+    ADD CONSTRAINT charity_event_participants_player_id_fkey FOREIGN KEY (player_id) REFERENCES play_player(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: charity_organization_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY charity_organization
+    ADD CONSTRAINT charity_organization_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: city_id_refs_id_9afcb0c6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_player
+    ADD CONSTRAINT city_id_refs_id_9afcb0c6 FOREIGN KEY (city_id) REFERENCES city_city(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: city_id_refs_id_c4dba30c; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_geoip_iprange
+    ADD CONSTRAINT city_id_refs_id_c4dba30c FOREIGN KEY (city_id) REFERENCES django_geoip_city(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: client_id_refs_id_098c2f19; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_grant
+    ADD CONSTRAINT client_id_refs_id_098c2f19 FOREIGN KEY (client_id) REFERENCES oauth2_client(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: client_id_refs_id_3730d4ce; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_refreshtoken
+    ADD CONSTRAINT client_id_refs_id_3730d4ce FOREIGN KEY (client_id) REFERENCES oauth2_client(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: client_id_refs_id_dffc817d; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_accesstoken
+    ADD CONSTRAINT client_id_refs_id_dffc817d FOREIGN KEY (client_id) REFERENCES oauth2_client(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: content_type_id_refs_id_d043b34a; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT content_type_id_refs_id_d043b34a FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: country_id_refs_code_145e9e8c; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_geoip_region
+    ADD CONSTRAINT country_id_refs_code_145e9e8c FOREIGN KEY (country_id) REFERENCES django_geoip_country(code) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: country_id_refs_code_74739937; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_geoip_iprange
+    ADD CONSTRAINT country_id_refs_code_74739937 FOREIGN KEY (country_id) REFERENCES django_geoip_country(code) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: coupon_id_refs_id_08730124; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY shop_coupon_buyers
+    ADD CONSTRAINT coupon_id_refs_id_08730124 FOREIGN KEY (coupon_id) REFERENCES shop_coupon(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_content_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_fkey FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: event_id_refs_id_65e5cadb; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY charity_event_participants
+    ADD CONSTRAINT event_id_refs_id_65e5cadb FOREIGN KEY (event_id) REFERENCES charity_event(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: event_id_refs_id_956925f1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_comment
+    ADD CONSTRAINT event_id_refs_id_956925f1 FOREIGN KEY (event_id) REFERENCES charity_event(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: event_id_refs_id_b536b0fb; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_feed
+    ADD CONSTRAINT event_id_refs_id_b536b0fb FOREIGN KEY (event_id) REFERENCES charity_event(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: group_id_refs_id_f4b32aac; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT group_id_refs_id_f4b32aac FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: play_badge_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_badge
+    ADD CONSTRAINT play_badge_player_id_fkey FOREIGN KEY (player_id) REFERENCES play_player(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: play_comment_commenter_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_comment
+    ADD CONSTRAINT play_comment_commenter_id_fkey FOREIGN KEY (commenter_id) REFERENCES play_player(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: play_commentfeed_commenter_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_commentfeed
+    ADD CONSTRAINT play_commentfeed_commenter_id_fkey FOREIGN KEY (commenter_id) REFERENCES play_player(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: play_commentfeed_feed_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_commentfeed
+    ADD CONSTRAINT play_commentfeed_feed_id_fkey FOREIGN KEY (feed_id) REFERENCES play_feed(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: play_couponhistory_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_couponhistory
+    ADD CONSTRAINT play_couponhistory_player_id_fkey FOREIGN KEY (player_id) REFERENCES play_player(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: play_eventhistory_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_eventhistory
+    ADD CONSTRAINT play_eventhistory_player_id_fkey FOREIGN KEY (player_id) REFERENCES play_player(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: play_feed_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_feed
+    ADD CONSTRAINT play_feed_player_id_fkey FOREIGN KEY (player_id) REFERENCES play_player(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: play_player_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY play_player
+    ADD CONSTRAINT play_player_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: region_id_refs_id_7f926888; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_geoip_iprange
+    ADD CONSTRAINT region_id_refs_id_7f926888 FOREIGN KEY (region_id) REFERENCES django_geoip_region(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: region_id_refs_id_c157a997; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_geoip_city
+    ADD CONSTRAINT region_id_refs_id_c157a997 FOREIGN KEY (region_id) REFERENCES django_geoip_region(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: shop_coupon_buyers_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY shop_coupon_buyers
+    ADD CONSTRAINT shop_coupon_buyers_player_id_fkey FOREIGN KEY (player_id) REFERENCES play_player(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: shop_coupon_shop_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY shop_coupon
+    ADD CONSTRAINT shop_coupon_shop_id_fkey FOREIGN KEY (shop_id) REFERENCES shop_shop(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: shop_shop_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY shop_shop
+    ADD CONSTRAINT shop_shop_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_40c41112; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT user_id_refs_id_40c41112 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_4dc23c39; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT user_id_refs_id_4dc23c39 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_71306ac9; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_accesstoken
+    ADD CONSTRAINT user_id_refs_id_71306ac9 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_8a95efb3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_grant
+    ADD CONSTRAINT user_id_refs_id_8a95efb3 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_990aee10; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tastypie_apikey
+    ADD CONSTRAINT user_id_refs_id_990aee10 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_b463b928; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_client
+    ADD CONSTRAINT user_id_refs_id_b463b928 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_e0af9726; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY oauth2_refreshtoken
+    ADD CONSTRAINT user_id_refs_id_e0af9726 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_e6cbdf29; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY social_auth_usersocialauth
+    ADD CONSTRAINT user_id_refs_id_e6cbdf29 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
