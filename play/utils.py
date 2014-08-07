@@ -142,12 +142,12 @@ def assignCity(request, user):
     g = GeoIP()
     city =''
     location=g.city(ip)
-    lon=location['longitude']
-    lat=location['latitude']
+    lon=float(location['longitude'])
+    lat=float(location['latitude'])
     cities=City.objects.all()
     for c in cities:
-        dif_lon = abs(c.longitude - lon)
-        dif_lan = abs(c.latitude -lat)
+        dif_lon = abs(float(c.longitude) - lon)
+        dif_lan = abs(float(c.latitude) -lat)
         if dif_lan <=2 and dif_lon <=2:
             player.city = c
             city = c.name
