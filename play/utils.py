@@ -137,19 +137,23 @@ def findEvent():
 
 def assignCity(request, user):
     from play.models import Player
+    player=Player.objects.get(user=user)
     ip=get_client_ip(request)
     g = GeoIP()
-    city=g.city(ip)
-    try:
-        city_object=City.objects.get(name=str(city))
-        player=Player.objects.get(user=user)
-        player.city=city_object
-        print player.city.name
-        player.save()
+    city =''
+    location=g.city(ip)
+    lon=location['longitude']
+    lat=location['latitude']
+    cities=City.objects.all()
+    for c in cities:
+        dif_lon = abs(c.longitude - lon)
+        dif_lan = abs(c.latitude -lat)
+        if dif_lan <=1 and dif_lon <=1:
+            player.city = c
+            city = c.name
+            player.save()
+    return city
 
-    except ObjectDoesNotExist:
-        return str(city)
-    return str(city)
 
 
 ##### Redirect if URL doesnt have the name of the city in it
