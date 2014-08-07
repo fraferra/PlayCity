@@ -148,7 +148,7 @@ def assignCity(request, user):
         player.save()
 
     except ObjectDoesNotExist:
-        return 'Not matching'
+        return city
     return str(city)
 
 
