@@ -148,7 +148,7 @@ def assignCity(request, user):
     for c in cities:
         dif_lon = abs(c.longitude - lon)
         dif_lan = abs(c.latitude -lat)
-        if dif_lan <=1 and dif_lon <=1:
+        if dif_lan <=2 and dif_lon <=2:
             player.city = c
             city = c.name
             player.save()

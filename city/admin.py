@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class CityAdmin(admin.ModelAdmin):
 	model=City
-	fields=['name',]
+	fields=['name','latitude', 'longitude']
 
 
 
