@@ -31,5 +31,7 @@ django-cors-headers==0.12
 beautifulsoup4==4.3.2
 django-geoip==0.4
 django-geoposition==0.1.5
+django-subdomains==2.0.4
+
 
 
