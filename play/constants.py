@@ -16,3 +16,7 @@ ICON =(
 	('fa-thumbs-o-up','fa-thumbs-o-up'),
 	('fa-paw', 'fa-paw'),
 	)
+
+
+
+CITY='None'

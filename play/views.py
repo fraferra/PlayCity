@@ -16,8 +16,8 @@ from play.forms import *
 from django.core.exceptions import *
 from datetime import datetime
 
-CITY='test'
-
+#CITY='test'
+from play.constants import CITY
 def login(request):
     if request.method == 'POST':
         username = request.POST['username']

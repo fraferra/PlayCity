@@ -15,10 +15,11 @@ import play.models
 import requests
 import datetime
 # Create your models here.
-
+from city.models import City
 
 class Shop(models.Model):
     user=models.ForeignKey(User)
+    city=models.ForeignKey(City, related_name='city_charity', default=None, null=True)
     title=models.CharField(max_length=100, null=True, default='Super shop!')
     location=models.CharField(max_length=100, null=True)
     picture_url=models.CharField(max_length=200, null=True, default='/static/img/stanford.png')

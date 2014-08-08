@@ -1,5 +1,5 @@
-{% extends "play/layout.html" %}
-{% block content %}
+{% extends "shop/layer_1.html" %}
+{% block content1 %}
 
 <div id="skills">
 		<div class="container" >
@@ -14,7 +14,11 @@
   						<div >
     						<div >
       						<h4 style="color:orange">
-      							<i class="fa fa-hand-o-right"></i> {{result.title}}  <span style="font-size:10px">(<a href="/my_coupons/?delete={{result.id}}"><i class="fa fa-thumbs-down"></i> DELETE</a>)</span>
+      							<i class="fa fa-hand-o-right"></i> {{result.title}} 
+                      <form method='post' >{% csrf_token %}
+                        <input type="hidden" value='{{result.id}}' name='id_delete' id="id_delete">
+                        <input type="submit" class="btn btn-primary btn-small" value="delete" >
+                      </form>
       						</h4>
       						<ul style="color:black">
       							<li><p>DESCRIPTION____ {{result.description}}</p></li>

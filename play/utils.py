@@ -142,8 +142,11 @@ def assignCity(request, user):
     g = GeoIP()
     city =''
     location=g.city(ip)
-    lon=float(location['longitude'])
-    lat=float(location['latitude'])
+    try:
+        lon=float(location['longitude'])
+        lat=float(location['latitude'])
+    except TypeError:
+        lon=lat=float(0)
     cities=City.objects.all()
     for c in cities:
         dif_lon = abs(float(c.longitude) - lon)

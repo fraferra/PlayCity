@@ -14,10 +14,11 @@ import shop.models
 # Create your models here.
 import requests
 import datetime
-
+from city.models import City
 
 class Organization(models.Model):
     user=models.ForeignKey(User)
+    city=models.ForeignKey(City, related_name='city_shop', default=None, null=True)
     title=models.CharField(max_length=100, null=True, default='Super Duper!')
     location=models.CharField(max_length=100, null=True)
     def __unicode__(self):  # Python 3: def __str__(self):

@@ -16,8 +16,47 @@ from django.contrib.auth import logout as django_logout
 from shop.forms import *
 from django.core.exceptions import *
 from datetime import datetime
+from datetime import datetime
+from shop.utils import *
+from play.constants import CITY
+
+def home(request, city_name=CITY):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/login/')
+    else:
+        user=request.user
+        player=Player.objects.get(user=user)
+        pictureUrl(user, player)
+        organization, shop =getShop(user)
+        try:
+            shop=Shop.objects.get(user=user)
+            createEvent(request, shop)
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect('/sorry/')
+        return render(request, 'shop/home.html', {'user':user,
+                                                                  'player':player,
+                                                                  'shop':shop})
 
 
+def company(request, city_name=CITY):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/login/')
+    else:
+        user=request.user
+        organization, shop=getShop(user)
+        if not shop:
+            return HttpResponseRedirect('/sorry/')
+        if request.method=='POST':
+            title=request.POST.get('title', '')
+            location=request.POST.get('location','')
+            shop.title=title
+            shop.location=location
+            shop.save()
+            return HttpResponseRedirect('/company/')
+        return render(request, 'shop/company.html', {'user':user,
+                                                           'shop':shop})
+
+'''
 
 def create_coupon(request):
     if not request.user.is_authenticated():
@@ -41,9 +80,9 @@ def create_coupon(request):
         except ObjectDoesNotExist:
             return HttpResponseRedirect('/sorry/')
 
-          
+'''      
 
-def my_coupons(request):
+def my_coupons(request, city_name=CITY):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
     else:
@@ -54,10 +93,11 @@ def my_coupons(request):
         list_of_coupons=Coupon.objects.filter(shop=shop)
         number=len(list_of_coupons)
         id_delete=request.GET.get('delete','')
-        if len(id_delete)!=0:
+        if request.method == 'POST':
+            id_delete=request.POST['id_delete']
             coupon=Coupon.objects.get(pk=id_delete)
             coupon.delete()
-            return HttpResponseRedirect('/my_coupons/')
+            return HttpResponseRedirect('/shop/my_coupons/')
         return render(request, 'shop/my_coupons.html', {'list_of_coupons':list_of_coupons, 'number':number, 'shop':shop})
 
 

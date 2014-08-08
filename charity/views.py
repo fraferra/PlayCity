@@ -19,9 +19,9 @@ from charity.forms import *
 
 from django.core.exceptions import *
 from datetime import datetime
+from play.constants import CITY
 
-
-def organization_home(request):
+def organization_home(request, city_name=CITY):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
     else:
@@ -36,7 +36,8 @@ def organization_home(request):
             return HttpResponseRedirect('/sorry/')
         return render(request, 'charity/organization_home.html', {'user':user,
                                                                   'player':player,
-                                                                  'shop':shop})
+                                                                  'shop':shop,
+                                                                  'city':CITY})
 
 
     

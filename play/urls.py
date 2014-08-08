@@ -12,8 +12,9 @@ urlpatterns = patterns('',
 
 
     url(r'^$', views.index ,name='index'),
-    url(r'^(?P<city_name>\w+)/event/$', views.event ,name='event'),
+    url(r'^event/$', views.event ,name='event'),
     url(r'^tmp_home/$', views.tmp_home ,name='tmp_home'),
+   
     url(r'^(?P<city_name>\w+)/home/$', views.home ,name='home'),
     url(r'^(?P<city_name>\w+)/look_events/$', views.look_events ,name='look_events'),
     url(r'^(?P<city_name>\w+)/look_coupons/$', views.look_coupons ,name='look_coupons'),
